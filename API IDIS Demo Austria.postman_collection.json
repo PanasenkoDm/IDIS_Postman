@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "63f8486c-dc40-488f-abeb-109a10b167f7",
+		"name": "API IDIS Demo Austria",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22839351"
+	},
+	"item": [
+		{
+			"name": "Get Kit (result) by Kit_ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"//var jsonDataResult = jsonData.results[0];\r",
+							"//console.log(\"DataResult\",jsonDataResult)\r",
+							" \r",
+							" \r",
+							" pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"     \r",
+							"   // pm.expect(jsonDataResult).to.include(\"result_number\");\r",
+							"   // pm.expect(jsonDataResult).to.include(\"stamp\");\r",
+							"   // pm.expect(jsonDataResult).to.include(\"kit_number\");\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"});\r",
+							"\r",
+							"\r",
+							"if (jsonData.count != 0)  {\r",
+							"   // if (jsonData.results[0].kit_number == \"0126-M1M1-6MXE-X33C\") {\r",
+							"      //  console.log(\"Kit\",\"0126-M1M1-6MXE-X33C\")\r",
+							"   // };\r",
+							"    pm.environment.set('var_result_number',jsonData.results[0].result_number);\r",
+							"}\r",
+							"\r",
+							"postman.setNextRequest('GetServiceRequest object by Examination ID');\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/kit/0126-M1M1-6MXE-X33C/results/",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"kit",
+						"0126-M1M1-6MXE-X33C",
+						"results",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetServiceRequest object by Examination ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" var jsonData = pm.response.json();\r",
+							"    pm.environment.set('var_ServiceRequest_ID',jsonData[0].id);\r",
+							"  \r",
+							"    pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest('GetDiagnosticReport by ServiceRequest ID');\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/service-request/?number={{var_result_number}}",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"service-request",
+						""
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "{{var_result_number}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDiagnosticReport by ServiceRequest ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"    pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest('GetObservation by ServiceRequest ID');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/diagnostic-report/?service_request={{var_ServiceRequest_ID}}",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"diagnostic-report",
+						""
+					],
+					"query": [
+						{
+							"key": "service_request",
+							"value": "{{var_ServiceRequest_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetObservation by ServiceRequest ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/observation/bc522297-7cc8-4593-8b4d-290bcc5a862d/",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"observation",
+						"bc522297-7cc8-4593-8b4d-290bcc5a862d",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL_Demo",
+			"value": "api.demo.idis2go.online",
+			"type": "string"
+		}
+	]
+}

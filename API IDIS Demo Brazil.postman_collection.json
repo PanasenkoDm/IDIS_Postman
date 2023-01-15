@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "3ed4fe17-934d-49b3-9d2a-7665593d8f3a",
+		"name": "API IDIS Demo Brazil",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22839351"
+	},
+	"item": [
+		{
+			"name": "Kit's Examination",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"//var jsonDataResult = jsonData.results[0];\r",
+							"//console.log(\"DataResult\",jsonDataResult)\r",
+							"\r",
+							"   pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest('Get Examination ID');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/kit/04K3-KX40-9H85-0BA1/results/",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"kit",
+						"04K3-KX40-9H85-0BA1",
+						"results",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Examination ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"    pm.environment.set('var_ServiceRequest_ID',jsonData[0].id);\r",
+							"  \r",
+							"    pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest('GET DiagnosticReport');\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/service-request/?number=1K46T8478",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"service-request",
+						""
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "1K46T8478"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET DiagnosticReport",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest('GET Observation');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/diagnostic-report/?service_request=38d4a91a-b7bd-4b99-981f-166542c8d40b",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"diagnostic-report",
+						""
+					],
+					"query": [
+						{
+							"key": "service_request",
+							"value": "38d4a91a-b7bd-4b99-981f-166542c8d40b"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Observation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{URL_Demo}}/v1/observation/7b87e7d3-6c18-491d-ac1d-e13c1214a11c/",
+					"protocol": "https",
+					"host": [
+						"{{URL_Demo}}"
+					],
+					"path": [
+						"v1",
+						"observation",
+						"7b87e7d3-6c18-491d-ac1d-e13c1214a11c",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL_Demo",
+			"value": "api.demo.idis2gobr.online"
+		}
+	]
+}
